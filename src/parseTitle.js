@@ -32,14 +32,11 @@ function getEpisode(details) {
 		if (validEp(match)) return [part.replace(match[0], ""), match[1]];
 	}
 
-	return [parts.trim(), ""];
+	return [parts[0].trim(), ""];
 }
 
 module.exports = function (originalTitle) {
-	let title = originalTitle.trim();
-
-	// Special ' character
-	if (originalTitle.includes("&#39;")) title = title.replace("&#39;", "'");
+	let title = originalTitle.trim().replace(/&amp;#\d{1,4};/g, _match => String.fromCharCode(_match.slice(6, -1)));
 
 	// Video extensions
 	if (originalTitle.includes(".mkv") || originalTitle.includes(".mp4")) title = title.slice(0, -4);
