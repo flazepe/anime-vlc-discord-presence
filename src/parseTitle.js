@@ -33,7 +33,7 @@ module.exports = function (originalTitle) {
 	originalTitle = originalTitle.trim().replace(/&amp;#\d{1,4};/g, _match => String.fromCharCode(_match.slice(6, -1)));
 
 	// Video extensions
-	if (originalTitle.includes(".mkv") || originalTitle.includes(".mp4")) originalTitle = originalTitle.slice(0, -4);
+	if (originalTitle.endsWith(".mkv") || originalTitle.endsWith(".mp4")) originalTitle = originalTitle.slice(0, -4);
 
 	// Brackets
 	if (originalTitle.includes("]")) originalTitle = originalTitle.replace(/[\s_.]*\[[^\]]*\][\s_.]*/g, "");
