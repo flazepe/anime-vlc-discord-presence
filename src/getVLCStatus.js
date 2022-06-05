@@ -29,7 +29,7 @@ module.exports = async function () {
 		);
 
 		const status = {
-			title: xml.getTagValue("<info name='filename'>") ?? xml.getTagValue("<info name='title'>"),
+			title: xml.getTagValue("<info name='filename'>"),
 			length: xml.getTagValue("<length>"),
 			time: xml.getTagValue("<time>"),
 			state: xml.getTagValue("<state>")
