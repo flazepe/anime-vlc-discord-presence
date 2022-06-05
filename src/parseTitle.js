@@ -3,7 +3,7 @@ function getEpisode(details) {
 
 	for (const part of parts) {
 		// ep1, episode 1, e1
-		let match = part.match(/(episode\s?|ep|e)(\d+)/i);
+		let match = part.match(/(episode\s?|ep\.?\s?|e)(\d+)/i);
 		if (!isNaN(match?.[2])) return [part.replace(match[0], ""), match[2]];
 
 		// 5x3 (season 5 ep 3)
