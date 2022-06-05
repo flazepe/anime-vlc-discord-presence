@@ -24,8 +24,8 @@ function getEpisode(details) {
 		if (validEp(match)) return [part.replace(match[0], ""), match[1]];
 
 		// 1 (just the number, at the end)
-		match = part.match(/(\d+)$/i);
-		if (validEp(match)) return [part.replace(match[0], ""), match[1]];
+		match = part.match(/\b\d+$/);
+		if (!isNaN(match?.[0])) return [part.replace(/\b\d+$/, ""), match[0]];
 
 		// 1 (just the number, anywhere)
 		match = part.match(/(\d+)/i);
