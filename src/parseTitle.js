@@ -53,7 +53,7 @@ module.exports = function (originalTitle) {
 	const parsed = getEpisode(title);
 
 	return {
-		title: parsed[0].split("-")[0].trim(),
+		title: parsed[0],
 		episode: parsed[1]
 	};
 };
