@@ -18,9 +18,11 @@ function getEpisode(details) {
 		match = part.match(/\b\d+$/);
 		if (!isNaN(match?.[0])) return [part.replace(/\b\d+$/, ""), match[0]];
 
+		/*
 		// 1 (just the number, anywhere)
 		match = part.match(/(\d+)/i);
 		if (!isNaN(match?.[1])) return [part.replace(match[0], ""), match[1]];
+		*/
 	}
 
 	return [parts[0].trim(), ""];
