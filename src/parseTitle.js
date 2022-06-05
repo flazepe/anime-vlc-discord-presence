@@ -1,6 +1,6 @@
 function matchTitleAndEpisode(details) {
 	// Episode 1, Ep.1, EP1, E1
-	let match = details.match(/(episode\s?|ep?\.?\s?|e)(\d+)/i);
+	let match = details.match(/\b(episode\s?|ep?\.?\s?|e)(\d+)\b/i);
 	if (!isNaN(match?.[2])) return [details.replace(match[0], ""), match[2]];
 
 	// 5x3 (Season 5 Episode 3)
