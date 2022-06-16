@@ -23,14 +23,14 @@ async function setActivity() {
 	};
 
 	// Set episode
-	if (parsedTitle.episode) activity.state = `Episode ${parsedTitle.episode}`;
+	if (parsedTitle.episode) activity.state = parsedTitle.episode;
 
 	// Set time remaining
 	if (vlcStatus.state == "Playing") activity.endTimestamp = Math.round(Date.now() / 1000 + (vlcStatus.length - vlcStatus.time));
 
 	// Log state change
 	if (vlcStatus.state !== previousState) {
-		console.info(`${vlcStatus.state} "${parsedTitle.title}" - Episode ${parsedTitle.episode}`);
+		console.info(`${vlcStatus.state} "${parsedTitle.title}" - ${parsedTitle.episode}`);
 		previousState = vlcStatus.state;
 	}
 
