@@ -20,7 +20,7 @@ function matchTitleAndEpisode(details) {
 
 	// 1 (just the number, at the end)
 	match = details.match(/\b\d+$/);
-	if (!isNaN(match?.[0])) return [details.slice(0, -match[0].length), `Episode ${Number(match[0]).toString()}`];
+	if (!isNaN(match?.[0])) return [details.slice(0, -match[0].length), `Episode ${Number(match[0])}`];
 
 	return [details, ""];
 }
