@@ -1,28 +1,54 @@
 function matchTitleAndEpisode(details) {
+	let season = 1,
+		episode;
+
 	// S5 E3, S5E3 (Season 5 Episode 3)
-	let match = details.match(/\bs(\d+)\s?e(\d+)\b/i);
-	if (!isNaN(match?.[1]) && !isNaN(match?.[2])) return [details.replace(match[0], ""), `Season ${Number(match[1])} Episode ${Number(match[2])}`];
+	let match = details.match(/\bs(\d+) ?e(\d+)\b/i);
+
+	if (![match?.[1], match?.[2]].some(isNaN)) {
+		details = details.replace(match[0], "");
+		season = match[1];
+		episode = match[2];
+	}
 
 	// 5x3, 3v5 (Season 5 Episode 3)
 	match = details.match(/\b\d+(x|v)\d+\b/i)?.[0].toLowerCase();
 
 	if (match) {
 		const seasonFirst = match.includes("x"),
-			split = match.split(seasonFirst ? "x" : "v").map(Number);
+			split = match.split(seasonFirst ? "x" : "v");
 
-		if (split.every(_entry => !isNaN(_entry)))
-			return [details.replace(match, ""), `Season ${seasonFirst ? split[0] : split[1]} Episode ${seasonFirst ? split[1] : split[0]}`];
+		if (!split.some(isNaN)) {
+			details = details.replace(match, "");
+			season = seasonFirst ? split[0] : split[1];
+			episode = seasonFirst ? split[1] : split[0];
+		}
 	}
 
-	// Episode 1, Ep.1, EP1, E1
-	match = details.match(/\b(episode\s?|ep?\.?\s?|e)(\d+)\b/i);
-	if (!isNaN(match?.[2])) return [details.replace(match[0], ""), `Episode ${Number(match[2])}`];
+	// Season 1, Season1, S1
+	match = details.match(/\b(season ?|s) ?(\d+)\b/i);
+
+	if (!isNaN(match?.[2])) {
+		details = details.replace(match[0], "");
+		season = match[2];
+	}
+
+	// Episode 1, Episode1, Ep.1, EP1, E1
+	match = details.match(/\b(episode|ep?\.?) ?(\d+)\b/i);
+
+	if (!isNaN(match?.[2])) {
+		details = details.replace(match[0], "");
+		episode = match[2];
+	}
 
 	// 1 (just the number, at the end)
 	match = details.match(/\b\d+$/);
-	if (!isNaN(match?.[0])) return [details.slice(0, -match[0].length), `Episode ${Number(match[0])}`];
+	if (!isNaN(match?.[0])) {
+		details = details.slice(0, -match[0].length);
+		episode = match[0];
+	}
 
-	return [details, ""];
+	return episode ? [details.trim().replace(/- *(?=-)| *-$/g, ""), `Season ${Number(season)} Episode ${Number(episode)}`] : [details, ""];
 }
 
 module.exports = function (originalTitle) {
@@ -35,17 +61,9 @@ module.exports = function (originalTitle) {
 	// Remove brackets and parentheses
 	originalTitle = originalTitle.replace(/(\[|\()(.+?)(\]|\))/g, "");
 
-	const [title, episode] = matchTitleAndEpisode(originalTitle.trim());
+	// Sanitize whitespaces
+	originalTitle = originalTitle.split(/\s+|[._]/).join(" ");
 
-	return {
-		title: title
-			// Split by delimiters + omit more than one space
-			.split(/\s+|[._]/)
-			.join(" ")
-			.trim()
-			// Miscellaneous stuff
-			.replace(/- -/g, "-")
-			.replace(/\s*-$/, ""),
-		episode
-	};
+	const [title, episode] = matchTitleAndEpisode(originalTitle.trim());
+	return { title, episode };
 };
