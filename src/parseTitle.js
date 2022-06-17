@@ -49,7 +49,13 @@ function matchTitleAndEpisode(details) {
 	}
 
 	return episode
-		? [details.trim().replace(/- *(?=-)| *-$/g, ""), `${Number(season) === 1 ? "" : `Season ${Number(season)} `}Episode ${Number(episode)}`]
+		? [
+				details
+					.trim()
+					.replace(/- *(?=-)| *-$/g, "")
+					.trim(),
+				`${Number(season) === 1 ? "" : `Season ${Number(season)} `}Episode ${Number(episode)}`
+		  ]
 		: [details, ""];
 }
 
