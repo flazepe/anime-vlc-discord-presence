@@ -1,5 +1,5 @@
 function matchTitleAndEpisode(details) {
-	let season = 1,
+	let season = "1",
 		episode;
 
 	// S5 E3, S5E3 (Season 5 Episode 3)
@@ -48,7 +48,9 @@ function matchTitleAndEpisode(details) {
 		episode = match[0];
 	}
 
-	return episode ? [details.trim().replace(/- *(?=-)| *-$/g, ""), `Season ${Number(season)} Episode ${Number(episode)}`] : [details, ""];
+	return episode
+		? [details.trim().replace(/- *(?=-)| *-$/g, ""), `${Number(season) === 1 ? "" : `Season ${Number(season)} `}Episode ${Number(episode)}`]
+		: [details, ""];
 }
 
 module.exports = function (originalTitle) {
