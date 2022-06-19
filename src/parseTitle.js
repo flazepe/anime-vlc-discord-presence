@@ -70,8 +70,11 @@ module.exports = function (originalTitle) {
 	originalTitle = originalTitle.replace(/(\[|\()(.+?)(\]|\))/g, "");
 
 	// Sanitize whitespaces
-	originalTitle = originalTitle.split(/\s+|[._]/).join(" ");
+	originalTitle = originalTitle
+		.split(/\s+|[._]/)
+		.join(" ")
+		.trim();
 
-	const [title, episode] = matchTitleAndEpisode(originalTitle.trim());
+	const [title, episode] = matchTitleAndEpisode(originalTitle);
 	return { title, episode };
 };
