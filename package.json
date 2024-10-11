@@ -1,5 +1,6 @@
 {
 	"name": "anime-vlc-discord-presence",
+	"type": "module",
 	"version": "1.0.0",
 	"description": "Anime Discord Rich Presence for VLC media player.",
 	"main": "./src/index.js",

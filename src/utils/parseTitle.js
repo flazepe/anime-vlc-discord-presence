@@ -48,18 +48,18 @@ function matchTitleAndEpisode(details) {
 		episode = match[0];
 	}
 
-	return episode
-		? [
+	return isNaN(episode)
+		? [details, ""]
+		: [
 				details
 					.trim()
 					.replace(/- *(?=-)| *-$/g, "")
 					.trim(),
-				`${Number(season) === 1 ? "" : `Season ${Number(season)} `}Episode ${Number(episode)}`
-		  ]
-		: [details, ""];
+				`${Number(season) === 1 ? "" : `Season ${Number(season)} `}Episode ${Number(episode)}`,
+		  ];
 }
 
-module.exports = function (originalTitle) {
+export default function (originalTitle) {
 	// Omit video extensions
 	if (originalTitle.endsWith(".mkv") || originalTitle.endsWith(".mp4")) originalTitle = originalTitle.slice(0, -4);
 
@@ -77,4 +77,4 @@ module.exports = function (originalTitle) {
 
 	const [title, episode] = matchTitleAndEpisode(originalTitle);
 	return { title, episode };
-};
+}
