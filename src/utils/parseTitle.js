@@ -11,7 +11,7 @@ function matchTitleAndEpisode(details) {
 		episode = match[2];
 	}
 
-	// 5x3, 3v5 (Season 5 Episode 3)
+	// 5x3 (Season 5 Episode 3), 5v3 (Season 3 Episode 5)
 	match = details.match(/\b\d+(x|v)\d+\b/i)?.[0].toLowerCase();
 
 	if (match) {
@@ -31,6 +31,14 @@ function matchTitleAndEpisode(details) {
 	if (!isNaN(match?.[2])) {
 		details = details.replace(match[0], "");
 		season = match[2];
+	}
+
+	// 2nd Season, 3rd Season, 4th Season
+	match = details.match(/\b(\d+)(st|nd|rd|th) season\b/i);
+
+	if (!isNaN(match?.[1])) {
+		details = details.replace(match[0], "");
+		season = match[1];
 	}
 
 	// Episode 1, Episode1, Ep.1, EP1, E1
