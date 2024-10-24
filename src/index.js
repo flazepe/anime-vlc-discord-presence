@@ -1,14 +1,14 @@
-import DiscordRPC from "discord-rpc";
+import { Client } from "discord-rpc";
 import { pid } from "discord-rpc/src/util.js";
 import { config, getVideoPlayerStatus } from "./utils/index.js";
 
-const rpc = new DiscordRPC.Client({ transport: "ipc" });
+const client = new Client({ transport: "ipc" });
 
 let previousState = "";
 
 async function setActivity() {
 	const status = await getVideoPlayerStatus();
-	if (!status) return rpc.clearActivity();
+	if (!status) return client.clearActivity();
 
 	// Activity
 	const activity = {
@@ -40,13 +40,13 @@ async function setActivity() {
 	}
 
 	// Set activity
-	await rpc.request("SET_ACTIVITY", { pid: pid(), activity }).catch(console.error);
+	await client.request("SET_ACTIVITY", { pid: pid(), activity }).catch(console.error);
 }
 
-rpc.on("ready", () => {
-	console.info(`Logged in as ${rpc.user.username}`);
+client.on("ready", () => {
+	console.info(`Logged in as ${client.user.username}`);
 	setActivity();
 	setInterval(() => setActivity(), 10000);
 });
 
-rpc.login({ clientId: "675539512910151691" }).catch(console.error);
+client.login({ clientId: "675539512910151691" }).catch(console.error);
