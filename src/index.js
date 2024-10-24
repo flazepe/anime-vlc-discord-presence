@@ -1,48 +1,42 @@
 import DiscordRPC from "discord-rpc";
 import { pid } from "discord-rpc/src/util.js";
-import { config, getVLCStatus, parseTitle } from "./utils/index.js";
+import { config, getVideoPlayerStatus } from "./utils/index.js";
 
 const rpc = new DiscordRPC.Client({ transport: "ipc" });
 
 let previousState = "";
 
 async function setActivity() {
-	const vlcStatus = await getVLCStatus();
-	if (!vlcStatus) return rpc.clearActivity();
-
-	// Parse title
-	const parsedTitle = parseTitle(vlcStatus.title);
-
-	// Capitalize state
-	vlcStatus.state = vlcStatus.state[0].toUpperCase() + vlcStatus.state.slice(1);
+	const status = await getVideoPlayerStatus();
+	if (!status) return rpc.clearActivity();
 
 	// Activity
 	const activity = {
 		type: 3,
-		details: parsedTitle.title,
+		details: status.title.title,
 		assets: {
 			large_image: config.LIST_SERVICE,
 			large_text: config.LIST_USERNAME,
-			small_image: vlcStatus.state.toLowerCase(),
-			small_text: vlcStatus.state,
+			small_image: status.state.toLowerCase(),
+			small_text: status.state,
 		},
 	};
 
 	// Set episode
-	if (parsedTitle.episode) activity.state = parsedTitle.episode;
+	if (status.title.episode) activity.state = status.title.episode;
 
 	// Set time remaining
-	if (vlcStatus.state == "Playing") {
-		const start = Date.now() - Math.round(vlcStatus.time * 1000),
-			end = start + Math.round(vlcStatus.length * 1000);
+	if (status.state == "Playing") {
+		const start = Date.now() - Math.round(status.time),
+			end = start + Math.round(status.length);
 
 		activity.timestamps = { start, end };
 	}
 
 	// Log state change
-	if (vlcStatus.state !== previousState) {
-		console.info(`${vlcStatus.state} "${parsedTitle.title}" - ${parsedTitle.episode}`);
-		previousState = vlcStatus.state;
+	if (status.state !== previousState) {
+		console.info(`${status.state} "${status.title.title}" - ${status.title.episode}`);
+		previousState = status.state;
 	}
 
 	// Set activity
