@@ -25,17 +25,16 @@ class XML {
 		if (tagIndex === -1) return null;
 
 		const closingTagIndex = this.xml.indexOf(`</${tag.split(" ")[0].slice(1)}${tag.includes(" ") ? ">" : ""}`, tagIndex);
-
 		return closingTagIndex === -1 ? null : this.xml.slice(tagIndex + tag.length, closingTagIndex);
 	}
 }
 
 export default async function () {
 	try {
-		let url = `http://localhost:${config.VLC_HTTP_PORT}/requests/status.xml`,
+		let url = `http://127.0.0.1:${config.VLC_HTTP_PORT}/requests/status.xml`,
 			headers = { authorization: `Basic ${Buffer.from(`:${config.VLC_HTTP_PASSWORD}`).toString("base64")}` };
 
-		if (config.VIDEO_PLAYER === "mpc-hc") (url = `http://localhost:${config.MPC_HC_HTTP_PORT}/variables.html`), (headers = {});
+		if (config.VIDEO_PLAYER === "mpc-hc") (url = `http://127.0.0.1:${config.MPC_HC_HTTP_PORT}/variables.html`), (headers = {});
 
 		const xml = new XML(await (await fetch(url, { headers })).text()),
 			status = Object.fromEntries(
@@ -43,7 +42,8 @@ export default async function () {
 			);
 
 		return Object.values(status).every(Boolean) && ["Playing", "Paused"].includes(status.state) ? status : null;
-	} catch {
+	} catch (e) {
+		console.log(e);
 		return null;
 	}
 }
