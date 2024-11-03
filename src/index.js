@@ -18,8 +18,8 @@ async function setActivity() {
 			large_image: config.LIST_SERVICE,
 			large_text: config.LIST_USERNAME,
 			small_image: status.state.toLowerCase(),
-			small_text: status.state,
-		},
+			small_text: status.state
+		}
 	};
 
 	// Set episode

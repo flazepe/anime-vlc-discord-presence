@@ -10,5 +10,5 @@ export default {
 	VLC_HTTP_PORT: process.env.VLC_HTTP_PORT || 8080,
 	MPC_HC_HTTP_PORT: process.env.MPC_HC_HTTP_PORT || 13579,
 	LIST_SERVICE: ["anilist", "myanimelist", "kitsu"].includes(LIST_SERVICE) ? LIST_SERVICE : "anilist",
-	LIST_USERNAME: process.env.LIST_USERNAME || "No username set",
+	LIST_USERNAME: process.env.LIST_USERNAME || "No username set"
 };
