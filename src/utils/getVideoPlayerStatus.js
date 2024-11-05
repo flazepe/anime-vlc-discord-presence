@@ -42,8 +42,7 @@ export default async function () {
 			);
 
 		return Object.values(status).every(Boolean) && ["Playing", "Paused"].includes(status.state) ? status : null;
-	} catch (e) {
-		console.log(e);
+	} catch {
 		return null;
 	}
 }
